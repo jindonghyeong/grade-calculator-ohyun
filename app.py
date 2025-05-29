@@ -39,3 +39,24 @@ if st.button("🎯 기말고사 목표 점수 계산"):
             st.success(f"✅ 이미 {target_grade} 등급을 넘었습니다!")
         else:
             st.info(f"📌 {target_grade} 등급을 위해 기말고사에서 **최소 {needed_score:.2f}점**이 필요합니다.")
+import pandas as pd
+from io import BytesIO
+
+if st.button("📤 결과 엑셀로 다운로드"):
+    # 엑셀에 담을 데이터 준비
+    data = {label: score for (score, weight), (label, _) in zip(scores, subject_items[subject]) if "기말" not in label}
+    data["목표 등급"] = target_grade
+    data["필요한 기말 점수"] = round(needed_score, 2)
+
+    df = pd.DataFrame([data])
+
+    output = BytesIO()
+    with pd.ExcelWriter(output, engine='xlsxwriter') as writer:
+        df.to_excel(writer, index=False, sheet_name='결과')
+
+    st.download_button(
+        label="📥 엑셀 다운로드",
+        data=output.getvalue(),
+        file_name=f"{subject}_기말_목표점수.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
