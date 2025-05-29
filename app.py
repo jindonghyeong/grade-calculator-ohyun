@@ -39,7 +39,6 @@ if st.button("🎯 기말고사 목표 점수 계산"):
             st.success(f"✅ 이미 {target_grade} 등급을 넘었습니다!")
         else:
             st.info(f"📌 {target_grade} 등급을 위해 기말고사에서 **최소 {needed_score:.2f}점**이 필요합니다.")
-import pandas as pd
-from io import BytesIO
+
 
  
